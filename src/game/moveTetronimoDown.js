@@ -31,6 +31,7 @@ const collision = (tetronimo, tetronimos) => {
           return otherCell[0] === cell[0] && otherCell[1] === cell[1]
         })
       }
+      return false
     })
   })){
     return true
