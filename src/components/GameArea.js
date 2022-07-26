@@ -4,9 +4,12 @@ import { useState, useEffect } from 'react';
 import createTetromino from '../game/createTetromino';
 import moveTetronimoDown from '../game/moveTetronimoDown';
 
-
 export default function GameArea() {
-const [tetronimos, setTetronimos] = useState([])
+  const [tetronimos, setTetronimos] = useState([])
+  
+  const keyPressHandler = (e) => {
+    console.log(e.key)
+  }
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -20,13 +23,7 @@ const [tetronimos, setTetronimos] = useState([])
           //move tetronimo down
           const newTetronimo = moveTetronimoDown(currentTetronimo, prevTetronimos)
           //replace current tetronimo with new tetronimo
-          const newTetronimos = prevTetronimos.map(tetronimo => {
-            if(tetronimo.active) {
-              return newTetronimo
-            }else{
-              return tetronimo
-            }
-          })
+          const newTetronimos = prevTetronimos.map(tetronimo => tetronimo === currentTetronimo ? newTetronimo : tetronimo)
         return newTetronimos
         }
       })
