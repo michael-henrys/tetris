@@ -19,3 +19,7 @@ td {
 .T {
   background-color: blue;
 }
+
+:focus {
+  outline: none
+}
