@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import createTetromino from '../game/createTetromino';
 import moveTetronimoDown from '../game/moveTetronimoDown';
 import moveTetronimoRight from '../game/moveTetronimoRight';
+import moveTetronimoLeft from '../game/moveTetronimoLeft';
 
 export default function GameArea() {
   const [tetronimos, setTetronimos] = useState([])
@@ -12,6 +13,9 @@ export default function GameArea() {
   const handleKeyDown = ({ key }) => {
     console.log(key)
     switch (key) {
+      case 'ArrowLeft':
+        setTetronimos(moveTetronimoLeft(tetronimos))
+        break;
       case 'ArrowRight':
         setTetronimos(moveTetronimoRight(tetronimos))
         break;

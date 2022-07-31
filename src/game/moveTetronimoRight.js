@@ -1,6 +1,6 @@
 import collision from "./collision"
 
-export default function moveTetronimoLeft(tetronimos) {
+export default function moveTetronimoRight(tetronimos) {
   //get current Tetronimo
   const tetronimo = tetronimos.find(tetronimo => tetronimo.active)
   //move tetronimo down
@@ -21,10 +21,7 @@ const getNewTetronimo = (tetronimo, tetronimos) => {
       cells: newCells }
   } else {
     //if there is a collision return the old tetronimo
-    //return deactivated tetronimo
-    return {
-      ...tetronimo,
-      active: false
-    }
+    return tetronimo
   }
 }
+
