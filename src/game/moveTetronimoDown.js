@@ -4,9 +4,12 @@ export default function moveTetronimoDown(tetronimos) {
   //get current Tetronimo
   const tetronimo = tetronimos.find(tetronimo => tetronimo.active)
   //move tetronimo down
-  const newTetronimo = getNewTetronimo(tetronimo, tetronimos)
-  //replace tetronimo with new tetronimo
-  return tetronimos.map(t => t === tetronimo ? newTetronimo : t)
+  if(tetronimo){
+    const newTetronimo = getNewTetronimo(tetronimo, tetronimos)
+    //replace tetronimo with new tetronimo
+    return tetronimos.map(t => t === tetronimo ? newTetronimo : t)
+  }
+  return tetronimos
 }
 
 const getNewTetronimo = (tetronimo, tetronimos) => {
