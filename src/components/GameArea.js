@@ -5,6 +5,7 @@ import createTetromino from '../game/createTetromino';
 import moveTetronimoDown from '../game/moveTetronimoDown';
 import moveTetronimoRight from '../game/moveTetronimoRight';
 import moveTetronimoLeft from '../game/moveTetronimoLeft';
+import rotateTetronimo from '../game/rotateTetronimo';
 
 export default function GameArea() {
   const [tetronimos, setTetronimos] = useState([])
@@ -18,6 +19,9 @@ export default function GameArea() {
         break;
       case 'ArrowRight':
         setTetronimos(moveTetronimoRight(tetronimos))
+        break;
+      case 'ArrowUp':
+        setTetronimos(rotateTetronimo(tetronimos))
         break;
       default:
         break;
