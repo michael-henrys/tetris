@@ -3,18 +3,29 @@ import Board from './Board.js';
 import { useState, useEffect, useRef } from 'react';
 import createTetromino from '../game/createTetromino';
 import moveTetronimoDown from '../game/moveTetronimoDown';
+import moveTetronimoRight from '../game/moveTetronimoRight';
 
 export default function GameArea() {
   const [tetronimos, setTetronimos] = useState([])
   const gameAreaRef = useRef(null)
   
   const handleKeyDown = ({ key }) => {
-      console.log(key)
+    console.log(key)
+    switch (key) {
+      case 'ArrowRight':
+        setTetronimos(moveTetronimoRight(tetronimos))
+        break;
+      default:
+        break;
+    }   
   }
 
   useEffect(() => {
     //focus on game area
     gameAreaRef.current.focus()
+  })
+
+  useEffect(() => {
     //main loop
     const interval = setInterval(() => {
       setTetronimos(prevTetronimos => {
