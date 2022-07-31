@@ -23,17 +23,19 @@ export default function Board({ tetronimos }) {
 
   return (
     <table>
+      <tbody>
       {board.map((row, rowIndex) => {
         return (
-          <tr>
+          <tr key={rowIndex}>
             {board[rowIndex].map((cell, cellIndex) => {
               return (
-                <td className={cell.type}></td>
+                <td className={cell.type} key={cellIndex}></td>
               )
             })}
           </tr>
         )
       })}
+      </tbody>
     </table>
   )
 }

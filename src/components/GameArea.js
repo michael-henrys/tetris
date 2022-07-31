@@ -50,7 +50,7 @@ export default function GameArea() {
           return moveTetronimoDown(prevTetronimos)
         }
       })
-    }, 500)
+    }, 700)
     return () => clearInterval(interval)
   }, [])
 
