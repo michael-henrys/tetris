@@ -1,6 +1,6 @@
 export default function collision (cells, tetronimos){
   //collision with edge
-  if(cells.some(cell => cell[1] >= 15) || cells.some(cell => cell[1] < 0) ||cells.some(cell => cell[0] < 0) || cells.some(cell => cell[0] >= 10)) {
+  if(cells.some(cell => cell[1] >= 15 || cell[1] < 0 || cell[0] < 0 || cell[0] >= 10)) {
     return true
   }
   //for each cell in this tetronimo check if it overlaps with any other tetronimo
