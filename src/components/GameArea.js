@@ -23,6 +23,9 @@ export default function GameArea() {
       case 'ArrowUp':
         setTetronimos(rotateTetronimo(tetronimos))
         break;
+      case 'ArrowDown':
+        setTetronimos(moveTetronimoDown(tetronimos))
+        break;
       default:
         break;
     }   
