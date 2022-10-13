@@ -17,7 +17,11 @@ td {
 }
 
 .T {
-  background-color: purple;
+  background-color: Magenta ;
+}
+
+.I {
+  background-color: cyan;
 }
 
 :focus {
