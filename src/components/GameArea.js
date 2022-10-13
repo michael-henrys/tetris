@@ -6,6 +6,7 @@ import moveTetronimoDown from '../game/moveTetronimoDown';
 import moveTetronimoRight from '../game/moveTetronimoRight';
 import moveTetronimoLeft from '../game/moveTetronimoLeft';
 import rotateTetronimo from '../game/rotateTetronimo';
+import removeCompleteRows from '../game/removeCompleteRows';
 
 export default function GameArea() {
   const [tetronimos, setTetronimos] = useState([])
@@ -43,8 +44,10 @@ export default function GameArea() {
         const currentTetronimo = prevTetronimos.find(tetronimo => tetronimo.active)
         //if there is no active tetronimo
         if(!currentTetronimo) {
+          //remove complete rows
+          const newTetronimos = removeCompleteRows(prevTetronimos)
           //create a new tetronimo
-          return [...prevTetronimos, createTetromino()]
+          return [...newTetronimos, createTetromino()]
         }else{
           //move tetronimo down
           return moveTetronimoDown(prevTetronimos)

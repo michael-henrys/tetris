@@ -8,6 +8,7 @@ export default function moveTetronimoDown(tetronimos) {
     const newTetronimo = getNewTetronimo(tetronimo, tetronimos)
     //replace tetronimo with new tetronimo
     return tetronimos.map(t => t === tetronimo ? newTetronimo : t)
+
   }
   return tetronimos
 }
