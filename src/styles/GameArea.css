@@ -24,6 +24,26 @@ td {
   background-color: cyan;
 }
 
+.O {
+  background-color: yellow;
+}
+
+.S {
+  background-color: lime;
+}
+
+.Z {
+  background-color: red;
+}
+
+.J {
+  background-color: blue;
+}
+
+.L {
+  background-color: orange;
+}
+
 :focus {
   outline: none
 }
