@@ -46,6 +46,7 @@ export default function GameArea() {
         if(!currentTetronimo) {
           //remove complete rows
           const newTetronimos = removeCompleteRows(prevTetronimos)
+          //check if game is over
           //create a new tetronimo
           return [...newTetronimos, createTetromino()]
         }else{
