@@ -11,6 +11,12 @@ import removeCompleteRows from '../game/removeCompleteRows';
 export default function GameArea() {
   const [tetronimos, setTetronimos] = useState([])
   const gameAreaRef = useRef(null)
+
+  //when the game area is mounted, focus the element so that keydown events are captured
+  useEffect(() => {
+    //focus on game area
+    gameAreaRef.current.focus()
+  })
   
   const handleKeyDown = ({ key }) => {
     console.log(key)
@@ -33,22 +39,16 @@ export default function GameArea() {
   }
 
   useEffect(() => {
-    //focus on game area
-    gameAreaRef.current.focus()
-  })
-
-  useEffect(() => {
     //main loop
     const interval = setInterval(() => {
       setTetronimos(prevTetronimos => {
         const currentTetronimo = prevTetronimos.find(tetronimo => tetronimo.active)
         //if there is no active tetronimo
         if(!currentTetronimo) {
-          //remove complete rows
-          const newTetronimos = removeCompleteRows(prevTetronimos)
+          
           //check if game is over
           //create a new tetronimo
-          return [...newTetronimos, createTetromino()]
+          return [...prevTetronimos, createTetromino()]
         }else{
           //move tetronimo down
           return moveTetronimoDown(prevTetronimos)
@@ -57,6 +57,12 @@ export default function GameArea() {
     }, 700)
     return () => clearInterval(interval)
   }, [])
+
+  useEffect(() => {
+    //remove complete rows
+    setTetronimos(removeCompleteRows(tetronimos))
+
+  }, [tetronimos])
 
   return (
     <div className='GameArea' tabIndex={0} onKeyDown={handleKeyDown} ref={gameAreaRef}>
