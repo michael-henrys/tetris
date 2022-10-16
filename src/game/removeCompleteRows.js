@@ -34,5 +34,5 @@ function removeRow(tetronimos, row){
       })
     }
   })
-  return removeCompleteRows(newTetronimos)
+  return newTetronimos
 }

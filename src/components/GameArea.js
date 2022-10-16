@@ -65,8 +65,8 @@ export default function GameArea() {
   }, [tetronimos])
 
   return (
-    <div className='GameArea' tabIndex={0} onKeyDown={handleKeyDown} ref={gameAreaRef}>
-      <Board tetronimos={tetronimos}/>
-    </div>
+      <div className='GameArea' tabIndex={0} onKeyDown={handleKeyDown}  ref={gameAreaRef}>
+        <Board tetronimos={tetronimos}/>
+      </div>
   )
 }
