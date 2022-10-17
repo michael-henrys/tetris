@@ -10,6 +10,7 @@ import removeCompleteRows from '../game/removeCompleteRows';
 
 export default function GameArea() {
   const [tetronimos, setTetronimos] = useState([])
+  const [lastTouch, setLastTouch] = useState(null)
   const [touchStart, setTouchStart] = useState(null)
   
   const gameAreaRef = useRef(null)
@@ -23,48 +24,49 @@ export default function GameArea() {
     gameAreaRef.current.focus()
   })
 
-  
+  //handle touch controls
   const onTouchStart = (e) => {
-    console.log('touch start')
-    setTouchStart({
-      x: e.targetTouches[0].clientX, 
-      y: e.targetTouches[0].clientY
-    })
+    const point = {x: e.touches[0].clientX, y: e.touches[0].clientY}
+    setLastTouch(point)
+    setTouchStart(point)
   }
 
   const onTouchMove = (e) => {
-    if (!touchStart) return
-    const  xDistance = touchStart.x - e.targetTouches[0].clientX
-    // 
-    const  yDistance = touchStart.y - touchEnd.y
+    if (!lastTouch) return
+    const point = {x: e.touches[0].clientX, y: e.touches[0].clientY}
+    const  xDistance = lastTouch.x - point.x
+    const  yDistance = lastTouch.y - point.y
     const isLeftSwipe = xDistance > minSwipeDistance
     const isRightSwipe = xDistance < -minSwipeDistance
-    // const isDownSwipe = yDistance > minSwipeDistance
-    // const isUpSwipe = yDistance < -minSwipeDistance
-    console.log(xDistance)
+    const isDownSwipe = yDistance < -minSwipeDistance
+    console.log(isDownSwipe)
     if(isLeftSwipe) {
       setTetronimos(moveTetronimoLeft(tetronimos))
-      setTouchStart({
-        x: e.targetTouches[0].clientX,
-        y: e.targetTouches[0].clientY
-      })
+      setLastTouch(point)
     } else if (isRightSwipe) {
       setTetronimos(moveTetronimoRight(tetronimos))
-      setTouchStart({
-        x: e.targetTouches[0].clientX,
-        y: e.targetTouches[0].clientY
-      })
+      setLastTouch(point)
+    } else if (isDownSwipe) {
+      setTetronimos(moveTetronimoDown(tetronimos))
+      setLastTouch(point)
     }
     
   }
 
   const onTouchEnd = (e) => {
-    
+    if (!touchStart) return
+    //get the distance between touchStart and touchEnd
+    const xDistance = touchStart.x - e.changedTouches[0].clientX
+    const yDistance = touchStart.y - e.changedTouches[0].clientY
+    //if the smaller than the minimum swipe distance, then it is a tap 
+    if (Math.abs(xDistance) < minSwipeDistance && Math.abs(yDistance) < minSwipeDistance) {
+      setTetronimos(rotateTetronimo(tetronimos))
+    }
     setTouchStart(null)
   }
-  
 
-  
+
+  //handle keydown controls
   const handleKeyDown = ({ key }) => {
     console.log(key)
     switch (key) {
@@ -84,7 +86,6 @@ export default function GameArea() {
         break;
     }   
   }
-
   
   useEffect(() => {
     //main loop
@@ -93,10 +94,11 @@ export default function GameArea() {
         const currentTetronimo = prevTetronimos.find(tetronimo => tetronimo.active)
         //if there is no active tetronimo
         if(!currentTetronimo) {
-          
+          //remove complete rows
+          const newTetronimos = removeCompleteRows(prevTetronimos)
           //check if game is over
           //create a new tetronimo
-          return [...prevTetronimos, createTetromino()]
+          return [...newTetronimos, createTetromino()]
         }else{
           //move tetronimo down
           return moveTetronimoDown(prevTetronimos)
@@ -106,11 +108,11 @@ export default function GameArea() {
     return () => clearInterval(interval)
   }, [])
 
-  useEffect(() => {
-    //remove complete rows
-    setTetronimos(removeCompleteRows(tetronimos))
+  // useEffect(() => {
+  //   //remove complete rows
+  //   setTetronimos(removeCompleteRows(tetronimos))
 
-  }, [tetronimos])
+  // }, [tetronimos])
 
   return (
       <div className='GameArea' tabIndex={0} onKeyDown={handleKeyDown} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} ref={gameAreaRef}>

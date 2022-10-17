@@ -36,5 +36,5 @@ function removeRow(tetronimos, row){
   })
   //clean up any tetronimos that have no cells
   newTetronimos = newTetronimos.filter(tetronimo => tetronimo.cells.length > 0)
-  return newTetronimos
+  return removeCompleteRows(newTetronimos)
 }
