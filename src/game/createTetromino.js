@@ -72,6 +72,14 @@ export default function createTetromino() {
   //return a random tetromino
   const tetrominos = [T, I, L, J, O, S, Z]
   const randomIndex = Math.floor(Math.random() * tetrominos.length)
-  return tetrominos[randomIndex]
-
+  const newTetronimo = tetrominos[randomIndex]
+  //move to center of board
+  const newCells = newTetronimo.cells.map(cell => {
+    return [cell[0] + 3, cell[1]]
+  }
+  )
+  return {
+    ...newTetronimo,
+    cells: newCells
+  }
 }
