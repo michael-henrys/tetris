@@ -4,6 +4,8 @@
   margin-right: center;
   margin-left: center;
   margin: 0 auto;
+  touch-action: none;
+
 }
 
 td {

@@ -10,13 +10,60 @@ import removeCompleteRows from '../game/removeCompleteRows';
 
 export default function GameArea() {
   const [tetronimos, setTetronimos] = useState([])
+  const [touchStart, setTouchStart] = useState(null)
+  
   const gameAreaRef = useRef(null)
+  
+  // the required distance between touchStart and touchEnd to be detected as a swipe
+  const minSwipeDistance = 30 
 
   //when the game area is mounted, focus the element so that keydown events are captured
   useEffect(() => {
     //focus on game area
     gameAreaRef.current.focus()
   })
+
+  
+  const onTouchStart = (e) => {
+    console.log('touch start')
+    setTouchStart({
+      x: e.targetTouches[0].clientX, 
+      y: e.targetTouches[0].clientY
+    })
+  }
+
+  const onTouchMove = (e) => {
+    if (!touchStart) return
+    const  xDistance = touchStart.x - e.targetTouches[0].clientX
+    // 
+    const  yDistance = touchStart.y - touchEnd.y
+    const isLeftSwipe = xDistance > minSwipeDistance
+    const isRightSwipe = xDistance < -minSwipeDistance
+    // const isDownSwipe = yDistance > minSwipeDistance
+    // const isUpSwipe = yDistance < -minSwipeDistance
+    console.log(xDistance)
+    if(isLeftSwipe) {
+      setTetronimos(moveTetronimoLeft(tetronimos))
+      setTouchStart({
+        x: e.targetTouches[0].clientX,
+        y: e.targetTouches[0].clientY
+      })
+    } else if (isRightSwipe) {
+      setTetronimos(moveTetronimoRight(tetronimos))
+      setTouchStart({
+        x: e.targetTouches[0].clientX,
+        y: e.targetTouches[0].clientY
+      })
+    }
+    
+  }
+
+  const onTouchEnd = (e) => {
+    
+    setTouchStart(null)
+  }
+  
+
   
   const handleKeyDown = ({ key }) => {
     console.log(key)
@@ -38,6 +85,7 @@ export default function GameArea() {
     }   
   }
 
+  
   useEffect(() => {
     //main loop
     const interval = setInterval(() => {
@@ -65,7 +113,7 @@ export default function GameArea() {
   }, [tetronimos])
 
   return (
-      <div className='GameArea' tabIndex={0} onKeyDown={handleKeyDown}  ref={gameAreaRef}>
+      <div className='GameArea' tabIndex={0} onKeyDown={handleKeyDown} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} ref={gameAreaRef}>
         <Board tetronimos={tetronimos}/>
       </div>
   )
