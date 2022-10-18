@@ -12,7 +12,7 @@ export default function GameArea() {
   const [tetronimos, setTetronimos] = useState([])
   const [lastTouch, setLastTouch] = useState(null)
   const [touchStart, setTouchStart] = useState(null)
-  
+  const [paused, setPaused] = useState(false)
   const gameAreaRef = useRef(null)
   
   // the required distance between touchStart and touchEnd to be detected as a swipe
@@ -91,6 +91,10 @@ export default function GameArea() {
     //main loop
     const interval = setInterval(() => {
       setTetronimos(prevTetronimos => {
+        if(paused) {
+          clearInterval(interval)
+          return prevTetronimos
+        }
         const currentTetronimo = prevTetronimos.find(tetronimo => tetronimo.active)
         //if there is no active tetronimo
         if(!currentTetronimo) {
@@ -106,17 +110,19 @@ export default function GameArea() {
       })
     }, 700)
     return () => clearInterval(interval)
-  }, [])
+  }, [paused])
 
-  // useEffect(() => {
-  //   //remove complete rows
-  //   setTetronimos(removeCompleteRows(tetronimos))
-
-  // }, [tetronimos])
+  const togglePause = () => {
+    setPaused(prevPaused => !prevPaused)
+  }
 
   return (
+    <>
+    <button onClick={togglePause}>Pause</button>
       <div className='GameArea' tabIndex={0} onKeyDown={handleKeyDown} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} ref={gameAreaRef}>
         <Board tetronimos={tetronimos}/>
       </div>
+    </>
+      
   )
 }
