@@ -1,14 +1,13 @@
 .row {
   display: flex;
   touch-action: none;
-  margin: auto;
+  margin: 25px;
   user-select: none;
-  justify-content: center;
 }
 
 td {
-  width: 26px;
-  height: 26px;
+  width: 25px;
+  height: 25px;
 }
 
 .empty {
@@ -42,14 +41,15 @@ td {
 .L {
   background-color: orange;
 }
-
-.button:hover {
-  fill-opacity: 0.7;
-  opacity: 0.7;
+@media (hover: hover) {
+  .button:hover {
+    fill-opacity: 0.7;
+    opacity: 0.7;
+  }
 }
 
 .button {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .restart-button {

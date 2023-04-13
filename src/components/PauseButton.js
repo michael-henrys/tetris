@@ -12,7 +12,7 @@ export default function PauseButton({ onClick }) {
   <div className='button' onClick={togglePause}>
     {!paused ?
         <svg fill="#cccccc"
-          width="30px" height="30px" viewBox="0 0 277.338 277.338">
+          width="40px" height="40px" viewBox="0 0 277.338 277.338">
           <g>
             <path d="M14.22,45.665v186.013c0,25.223,16.711,45.66,37.327,45.66c20.618,0,37.339-20.438,37.339-45.66V45.665
 		      c0-25.211-16.721-45.657-37.339-45.657C30.931,0,14.22,20.454,14.22,45.665z"/>
@@ -22,7 +22,7 @@ export default function PauseButton({ onClick }) {
         </svg>
       :
         <svg fill="#cccccc"
-          width="30px" height="30px" viewBox="0 0 163.861 163.861">
+          width="40px" height="40px" viewBox="0 0 163.861 163.861">
           <g>
             <path d="M34.857,3.613C20.084-4.861,8.107,2.081,8.107,19.106v125.637c0,17.042,11.977,23.975,26.75,15.509L144.67,97.275
 		        c14.778-8.477,14.778-22.211,0-30.686L34.857,3.613z"/>
