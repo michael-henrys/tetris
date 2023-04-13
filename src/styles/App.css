@@ -1,9 +1,29 @@
 body {
-  font-family: monospace;
-  color: #2b2b2b;
+  font-family: 'VT323', monospace;
   text-align: center;
-  background-color: lightgrey;
+  background-color: #2b2b2b;
   font-style: normal;
+}
+
+h1 {
+  font-size: 50px;
+}
+
+.title {
+  width: 400px;
+  color: #cccccc;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 2px;
+  /* animation: blinker 1s steps(1, end) infinite; */
+}
+
+@keyframes blinker {
+  50% {
+    background-color: #2b2b2b;
+    color: #cccccc;
+  }
+
 }
 
 header {
@@ -13,6 +33,3 @@ header {
 footer {
   margin: 30px;
 }
-
-
-

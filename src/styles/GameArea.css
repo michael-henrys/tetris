@@ -1,9 +1,6 @@
 .row {
   display: flex;
   touch-action: none;
-  /* width: 300px; */
-  margin-right: center;
-  margin-left: center;
   margin: auto;
   user-select: none;
   justify-content: center;
@@ -12,7 +9,6 @@
 td {
   width: 26px;
   height: 26px;
-  /* border-radius: 2px; */
 }
 
 .empty {
@@ -47,15 +43,36 @@ td {
   background-color: orange;
 }
 
-.pause-button:hover {
+.button:hover {
   fill-opacity: 0.7;
+  opacity: 0.7;
 }
 
+.button {
+  margin-bottom: 15px;
+}
+
+.restart-button {
+  padding: 7px;
+  background-color: #b7b7b7;
+  border-radius: 3px;
+  font-size: 25px;
+}
+
+
 .control-panel {
-  margin: 10px;
-  padding: 10px;
+  padding-left: 20px;
+
 }
 
 :focus {
   outline: none
+}
+
+.board {
+  border-color: #b7b7b7;
+  border-style: solid;
+  border-width: 3px;   
+  /* background-color:  #575757; */
+  border-radius: 2px; 
 }

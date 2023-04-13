@@ -8,6 +8,7 @@ import moveTetronimoLeft from '../game/moveTetronimoLeft';
 import rotateTetronimo from '../game/rotateTetronimo';
 import removeCompleteRows from '../game/removeCompleteRows';
 import PauseButton from './PauseButton';
+import RestartButton from './RestartButton';
 
 export default function GameArea() {
   const [tetronimos, setTetronimos] = useState([])
@@ -27,12 +28,14 @@ export default function GameArea() {
 
   //handle touch controls
   const onTouchStart = (e) => {
+    if(paused) return
     const point = {x: e.touches[0].clientX, y: e.touches[0].clientY}
     setLastTouch(point)
     setTouchStart(point)
   }
 
   const onTouchMove = (e) => {
+    if(paused) return
     if (!lastTouch) return
     const point = {x: e.touches[0].clientX, y: e.touches[0].clientY}
     const  xDistance = lastTouch.x - point.x
@@ -69,6 +72,7 @@ export default function GameArea() {
 
   //handle keydown controls
   const handleKeyDown = ({ key }) => {
+    if(paused) return
     console.log(key)
     switch (key) {
       case 'ArrowLeft':
@@ -119,14 +123,13 @@ export default function GameArea() {
 
   return (
       <div className='row'>
-        <div tabIndex={0} onKeyDown={handleKeyDown} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} ref={gameAreaRef}>
+        <div className='board' tabIndex={0} onKeyDown={handleKeyDown} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} ref={gameAreaRef}>
           <Board tetronimos={tetronimos}/>
         </div>
         <div className='control-panel'>
+          <RestartButton onClick={()=> setTetronimos([])}/>
           <PauseButton onClick={togglePause} />
         </div>
       </div>
-      
-      
   )
 }
