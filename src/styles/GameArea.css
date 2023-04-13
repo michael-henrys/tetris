@@ -1,16 +1,17 @@
-.GameArea{
-  width: 300px;
-  height: auto;
+.row {
+  display: flex;
+  touch-action: none;
+  /* width: 300px; */
   margin-right: center;
   margin-left: center;
-  margin: 0 auto;
-  touch-action: none;
-
+  margin: auto;
+  user-select: none;
+  justify-content: center;
 }
 
 td {
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
   /* border-radius: 2px; */
 }
 
@@ -19,7 +20,7 @@ td {
 }
 
 .T {
-  background-color: Magenta ;
+  background-color: Magenta;
 }
 
 .I {
@@ -44,6 +45,15 @@ td {
 
 .L {
   background-color: orange;
+}
+
+.pause-button:hover {
+  fill-opacity: 0.7;
+}
+
+.control-panel {
+  margin: 10px;
+  padding: 10px;
 }
 
 :focus {

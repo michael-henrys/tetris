@@ -7,6 +7,7 @@ import moveTetronimoRight from '../game/moveTetronimoRight';
 import moveTetronimoLeft from '../game/moveTetronimoLeft';
 import rotateTetronimo from '../game/rotateTetronimo';
 import removeCompleteRows from '../game/removeCompleteRows';
+import PauseButton from './PauseButton';
 
 export default function GameArea() {
   const [tetronimos, setTetronimos] = useState([])
@@ -117,12 +118,15 @@ export default function GameArea() {
   }
 
   return (
-    <>
-    <button onClick={togglePause}>Pause</button>
-      <div className='GameArea' tabIndex={0} onKeyDown={handleKeyDown} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} ref={gameAreaRef}>
-        <Board tetronimos={tetronimos}/>
+      <div className='row'>
+        <div tabIndex={0} onKeyDown={handleKeyDown} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} ref={gameAreaRef}>
+          <Board tetronimos={tetronimos}/>
+        </div>
+        <div className='control-panel'>
+          <PauseButton onClick={togglePause} />
+        </div>
       </div>
-    </>
+      
       
   )
 }
