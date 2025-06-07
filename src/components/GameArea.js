@@ -9,6 +9,7 @@ import rotateTetronimo from '../game/rotateTetronimo';
 import removeCompleteRows from '../game/removeCompleteRows';
 import PauseButton from './PauseButton';
 import RestartButton from './RestartButton';
+import GameOverMessage from './GameOverMessage';
 import collision from '../game/collision';
 
 export default function GameArea() {
@@ -139,16 +140,7 @@ export default function GameArea() {
       <div className='row'>
         <div className='board' tabIndex={0} onKeyDown={handleKeyDown} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} ref={gameAreaRef}>
           <Board tetronimos={tetronimos}/>
-          {gameOver && (
-            <div className="game-over-overlay">
-              <div className="game-over-message">
-                <h2>Game Over!</h2>
-                <button className="restart-button" onClick={handleRestart}>
-                  Play Again
-                </button>
-              </div>
-            </div>
-          )}
+          {gameOver && <GameOverMessage onRestart={handleRestart} />}
         </div>
         <div className='control-panel'>
           <RestartButton onClick={handleRestart}/>
