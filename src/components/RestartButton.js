@@ -1,8 +1,11 @@
 import React from 'react'
 
-export default function RestartButton( {onClick } ) {
+export default function RestartButton({ onClick, disabled }) {
   return (
-    <div onClick={onClick} className='restart-button button'>
+    <div 
+      onClick={() => !disabled && onClick()} 
+      className={`restart-button button ${disabled ? 'disabled' : ''}`}
+    >
       RESET
     </div>
   )

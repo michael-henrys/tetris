@@ -143,8 +143,8 @@ export default function GameArea() {
           {gameOver && <GameOverMessage onRestart={handleRestart} />}
         </div>
         <div className='control-panel'>
-          <RestartButton onClick={handleRestart}/>
-          <PauseButton onClick={togglePause} />
+          <RestartButton onClick={handleRestart} disabled={gameOver}/>
+          <PauseButton onClick={togglePause} disabled={gameOver} />
         </div>
       </div>
   )
