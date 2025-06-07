@@ -75,4 +75,50 @@ td {
   border-width: 3px;   
   /* background-color:  #575757; */
   border-radius: 2px; 
+  position: relative;
+}
+
+.game-over-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.game-over-message {
+  background-color: #2b2b2b;
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+  border: 2px solid #b7b7b7;
+}
+
+.game-over-message h2 {
+  color: #cccccc;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-family: 'VT323', monospace;
+}
+
+.game-over-message .restart-button {
+  background-color: #b7b7b7;
+  color: #2b2b2b;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: 'VT323', monospace;
+  font-size: 1.5rem;
+}
+
+.game-over-message .restart-button:hover {
+  background-color: #cccccc;
 }

@@ -9,12 +9,14 @@ import rotateTetronimo from '../game/rotateTetronimo';
 import removeCompleteRows from '../game/removeCompleteRows';
 import PauseButton from './PauseButton';
 import RestartButton from './RestartButton';
+import collision from '../game/collision';
 
 export default function GameArea() {
   const [tetronimos, setTetronimos] = useState([])
   const [lastTouch, setLastTouch] = useState(null)
   const [touchStart, setTouchStart] = useState(null)
   const [paused, setPaused] = useState(false)
+  const [gameOver, setGameOver] = useState(false)
   const gameAreaRef = useRef(null)
   
   // the required distance between touchStart and touchEnd to be detected as a swipe
@@ -72,7 +74,7 @@ export default function GameArea() {
 
   //handle keydown controls
   const handleKeyDown = ({ key }) => {
-    if(paused) return
+    if(paused || gameOver) return
     console.log(key)
     switch (key) {
       case 'ArrowLeft':
@@ -96,7 +98,7 @@ export default function GameArea() {
     //main loop
     const interval = setInterval(() => {
       setTetronimos(prevTetronimos => {
-        if(paused) {
+        if(paused || gameOver) {
           clearInterval(interval)
           return prevTetronimos
         }
@@ -105,9 +107,15 @@ export default function GameArea() {
         if(!currentTetronimo) {
           //remove complete rows
           const newTetronimos = removeCompleteRows(prevTetronimos)
-          //check if game is over
           //create a new tetronimo
-          return [...newTetronimos, createTetromino()]
+          const newTetronimo = createTetromino()
+          //check if the new tetronimo would collide with existing pieces
+          if(collision(newTetronimo.cells, newTetronimos)) {
+            //game over - set game over state
+            setGameOver(true)
+            return prevTetronimos
+          }
+          return [...newTetronimos, newTetronimo]
         }else{
           //move tetronimo down
           return moveTetronimoDown(prevTetronimos)
@@ -115,19 +123,35 @@ export default function GameArea() {
       })
     }, 700)
     return () => clearInterval(interval)
-  }, [paused])
+  }, [paused, gameOver])
 
   const togglePause = () => {
     setPaused(prevPaused => !prevPaused)
+  }
+
+  const handleRestart = () => {
+    setTetronimos([])
+    setGameOver(false)
+    setPaused(false)
   }
 
   return (
       <div className='row'>
         <div className='board' tabIndex={0} onKeyDown={handleKeyDown} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} ref={gameAreaRef}>
           <Board tetronimos={tetronimos}/>
+          {gameOver && (
+            <div className="game-over-overlay">
+              <div className="game-over-message">
+                <h2>Game Over!</h2>
+                <button className="restart-button" onClick={handleRestart}>
+                  Play Again
+                </button>
+              </div>
+            </div>
+          )}
         </div>
         <div className='control-panel'>
-          <RestartButton onClick={()=> setTetronimos([])}/>
+          <RestartButton onClick={handleRestart}/>
           <PauseButton onClick={togglePause} />
         </div>
       </div>
