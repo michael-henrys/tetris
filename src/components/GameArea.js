@@ -18,6 +18,7 @@ export default function GameArea() {
   const [touchStart, setTouchStart] = useState(null)
   const [paused, setPaused] = useState(false)
   const [gameOver, setGameOver] = useState(false)
+  const [isMovingDown, setIsMovingDown] = useState(false)
   const gameAreaRef = useRef(null)
   
   // the required distance between touchStart and touchEnd to be detected as a swipe
@@ -31,14 +32,14 @@ export default function GameArea() {
 
   //handle touch controls
   const onTouchStart = (e) => {
-    if(paused) return
+    if(paused || gameOver) return
     const point = {x: e.touches[0].clientX, y: e.touches[0].clientY}
     setLastTouch(point)
     setTouchStart(point)
   }
 
   const onTouchMove = (e) => {
-    if(paused) return
+    if(paused || gameOver) return
     if (!lastTouch) return
     const point = {x: e.touches[0].clientX, y: e.touches[0].clientY}
     const  xDistance = lastTouch.x - point.x
@@ -46,7 +47,6 @@ export default function GameArea() {
     const isLeftSwipe = xDistance > minSwipeDistance
     const isRightSwipe = xDistance < -minSwipeDistance
     const isDownSwipe = yDistance < -minSwipeDistance
-    console.log(isDownSwipe)
     if(isLeftSwipe) {
       setTetronimos(moveTetronimoLeft(tetronimos))
       setLastTouch(point)
@@ -54,14 +54,15 @@ export default function GameArea() {
       setTetronimos(moveTetronimoRight(tetronimos))
       setLastTouch(point)
     } else if (isDownSwipe) {
+      setIsMovingDown(true)
       setTetronimos(moveTetronimoDown(tetronimos))
       setLastTouch(point)
     }
-    
   }
 
   const onTouchEnd = (e) => {
     if (!touchStart) return
+    setIsMovingDown(false)
     //get the distance between touchStart and touchEnd
     const xDistance = touchStart.x - e.changedTouches[0].clientX
     const yDistance = touchStart.y - e.changedTouches[0].clientY
@@ -72,11 +73,9 @@ export default function GameArea() {
     setTouchStart(null)
   }
 
-
   //handle keydown controls
   const handleKeyDown = ({ key }) => {
     if(paused || gameOver) return
-    console.log(key)
     switch (key) {
       case 'ArrowLeft':
         setTetronimos(moveTetronimoLeft(tetronimos))
@@ -88,11 +87,18 @@ export default function GameArea() {
         setTetronimos(rotateTetronimo(tetronimos))
         break;
       case 'ArrowDown':
+        setIsMovingDown(true)
         setTetronimos(moveTetronimoDown(tetronimos))
         break;
       default:
         break;
     }   
+  }
+
+  const handleKeyUp = ({ key }) => {
+    if (key === 'ArrowDown') {
+      setIsMovingDown(false)
+    }
   }
   
   useEffect(() => {
@@ -116,15 +122,23 @@ export default function GameArea() {
             setGameOver(true)
             return prevTetronimos
           }
+          // Reset isMovingDown when creating a new tetronimo
+          setIsMovingDown(false)
           return [...newTetronimos, newTetronimo]
         }else{
           //move tetronimo down
-          return moveTetronimoDown(prevTetronimos)
+          const newTetronimos = moveTetronimoDown(prevTetronimos)
+          // Check if the tetronimo has landed (is no longer active)
+          const hasLanded = !newTetronimos.find(t => t.active)
+          if (hasLanded) {
+            setIsMovingDown(false)
+          }
+          return newTetronimos
         }
       })
-    }, 700)
+    }, isMovingDown ? 50 : 700) // Faster movement when moving down
     return () => clearInterval(interval)
-  }, [paused, gameOver])
+  }, [paused, gameOver, isMovingDown])
 
   const togglePause = () => {
     setPaused(prevPaused => !prevPaused)
@@ -134,12 +148,22 @@ export default function GameArea() {
     setTetronimos([])
     setGameOver(false)
     setPaused(false)
+    setIsMovingDown(false)
   }
 
   return (
       <div className='row'>
-        <div className='board' tabIndex={0} onKeyDown={handleKeyDown} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} ref={gameAreaRef}>
-          <Board tetronimos={tetronimos}/>
+        <div 
+          className='board' 
+          tabIndex={0} 
+          onKeyDown={handleKeyDown} 
+          onKeyUp={handleKeyUp}
+          onTouchStart={onTouchStart} 
+          onTouchMove={onTouchMove} 
+          onTouchEnd={onTouchEnd} 
+          ref={gameAreaRef}
+        >
+          <Board tetronimos={tetronimos} isMovingDown={isMovingDown}/>
           {gameOver && <GameOverMessage onRestart={handleRestart} />}
         </div>
         <div className='control-panel'>

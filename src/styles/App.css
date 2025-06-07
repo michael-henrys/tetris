@@ -23,7 +23,7 @@ h1 {
   margin-left: auto;
   margin-right: auto;
   border-radius: 2px;
-  /* animation: blinker 1s steps(1, end) infinite; */
+  animation: blinker 1s steps(1, end) infinite;
 }
 
 @keyframes blinker {

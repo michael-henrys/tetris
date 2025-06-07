@@ -10,7 +10,39 @@ td {
   width: 25px;
   height: 25px;
   border-radius: 4px;
-  transition: all 0.2s ease;
+  transition: all 0.1s ease;
+  position: relative;
+}
+
+td.active {
+  animation: pulse 1s infinite;
+}
+
+td.moving-down {
+  animation: moveDown 0.05s ease-out;
+}
+
+@keyframes moveDown {
+  0% {
+    transform: translateY(-2px);
+    filter: brightness(1.2);
+  }
+  100% {
+    transform: translateY(0);
+    filter: brightness(1);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  }
 }
 
 .empty {
@@ -120,17 +152,17 @@ table {
   border-collapse: separate;
 }
 
-/* Add a subtle animation to active pieces */
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-  }
-  100% {
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-  }
+/* Add a subtle trail effect for moving pieces */
+td.active::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: inherit;
+  opacity: 0.5;
+  filter: blur(2px);
 }
 
 /* Add responsive design */
